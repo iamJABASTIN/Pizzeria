@@ -1,0 +1,13 @@
+# Dependencies
+client/node_modules/
+server/node_modules/
+
+# Production/Build outputs
+client/dist/
+
+# Environment and sensitive data
+server/.env
+*.env
+
+# System files
+.DS_Store
