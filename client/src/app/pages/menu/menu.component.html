@@ -1,8 +1,162 @@
-<main class="placeholder-container">
-  <div class="card">
-    <div class="icon-wrapper">🍕</div>
-    <h1>Order Pizza</h1>
-    <p>Our mouthwatering standard pizza menu is coming very soon. Stay tuned to explore our signature recipes crafted by our master chefs!</p>
-    <a href="/" class="back-link">Return Home</a>
-  </div>
+<main class="menu-container">
+  <!-- Interactive Filter Header -->
+  <section class="filter-header-section">
+    <div class="filter-wrapper">
+      <h1 class="menu-title">Order Pizza</h1>
+      <p class="menu-subtitle">Choose from our signature range of artisanal pizzas crafted by master chefs.</p>
+      
+      <div class="controls-grid">
+        <!-- Search Input -->
+        <div class="search-box">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search by name, ingredient, topping..." 
+            [ngModel]="searchQuery()" 
+            (ngModelChange)="searchQuery.set($event)"
+            aria-label="Search pizzas"
+          />
+        </div>
+
+        <!-- Filter Categories (Veg/Non-Veg Tabs) -->
+        <div class="category-tabs">
+          <button 
+            type="button" 
+            class="tab-btn" 
+            [class.active]="selectedCategory() === 'all'" 
+            (click)="selectedCategory.set('all')">
+            All
+          </button>
+          <button 
+            type="button" 
+            class="tab-btn veg-tab" 
+            [class.active]="selectedCategory() === 'veg'" 
+            (click)="selectedCategory.set('veg')">
+            <span class="tab-indicator veg"></span> Veg
+          </button>
+          <button 
+            type="button" 
+            class="tab-btn non-veg-tab" 
+            [class.active]="selectedCategory() === 'non-veg'" 
+            (click)="selectedCategory.set('non-veg')">
+            <span class="tab-indicator non-veg"></span> Non-Veg
+          </button>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="sort-box">
+          <span class="sort-label">Sort by:</span>
+          <select 
+            [ngModel]="sortBy()" 
+            (ngModelChange)="sortBy.set($event)"
+            aria-label="Sort pizzas">
+            <option value="name">Name (A-Z)</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Cards Layout -->
+  <section class="menu-list-section">
+    <!-- Skeleton Loaders -->
+    @if (loading()) {
+      <div class="menu-grid">
+        @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
+          <div class="pizza-card skeleton-card">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-row header"></div>
+              <div class="skeleton-row desc"></div>
+              <div class="skeleton-row desc-short"></div>
+              <div class="skeleton-row price"></div>
+              <div class="skeleton-row tags"></div>
+              <div class="skeleton-row button"></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Error Banner -->
+    @else if (error()) {
+      <div class="error-container">
+        <div class="error-icon">⚠️</div>
+        <h3>Oops! Something went wrong</h3>
+        <p>{{ error() }}</p>
+        <button class="retry-btn" (click)="loadPizzas()">Try Again</button>
+      </div>
+    }
+
+    <!-- Empty Results -->
+    @else if (filteredPizzas().length === 0) {
+      <div class="empty-container">
+        <div class="empty-icon">🍕</div>
+        <h3>No Pizzas Found</h3>
+        <p>We couldn't find any pizzas matching "{{ searchQuery() }}". Try adjusting your search query or filters.</p>
+        <button class="reset-btn" (click)="searchQuery.set(''); selectedCategory.set('all')">Reset Filters</button>
+      </div>
+    }
+
+    <!-- Pizza Cards Grid -->
+    @else {
+      <div class="menu-grid">
+        @for (pizza of filteredPizzas(); track pizza._id) {
+          <article class="pizza-card">
+            <!-- Veg / Non-Veg Indicator Symbol -->
+            <div class="veg-badge" [class.veg]="pizza.isVeg" [class.non-veg]="!pizza.isVeg" [title]="pizza.isVeg ? 'Vegetarian' : 'Non-Vegetarian'">
+              <span class="veg-dot"></span>
+            </div>
+
+            <!-- Pizza Image -->
+            <div class="pizza-image-wrapper">
+              <img [src]="pizza.image" [alt]="pizza.name" class="pizza-image" loading="lazy" />
+            </div>
+
+            <!-- Pizza Details -->
+            <div class="pizza-info">
+              <div class="pizza-header">
+                <h2 class="pizza-name">{{ pizza.name }}</h2>
+                <span class="pizza-price">₹{{ pizza.price.toFixed(2) }}</span>
+              </div>
+              
+              <p class="pizza-description">{{ pizza.description }}</p>
+
+              <!-- Ingredients -->
+              <div class="pizza-section">
+                <span class="section-title">Ingredients</span>
+                <div class="tags-container">
+                  @for (ing of pizza.ingredients; track ing) {
+                    <span class="tag ingredient-tag">{{ ing }}</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Toppings -->
+              <div class="pizza-section">
+                <span class="section-title">Toppings</span>
+                <div class="tags-container">
+                  @for (top of pizza.toppings; track top) {
+                    <span class="tag topping-tag">{{ top }}</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="pizza-actions">
+                <button class="add-to-cart-btn" (click)="onAddToCart(pizza)" aria-label="Add to cart">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
 </main>

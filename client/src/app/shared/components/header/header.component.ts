@@ -1,5 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class HeaderComponent {
   private readonly router = inject(Router);
+  protected readonly cartService = inject(CartService);
   
   // Responsive mobile menu state using Angular Signals
   protected readonly isMenuOpen = signal(false);

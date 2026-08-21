@@ -1,4 +1,19 @@
 <app-header></app-header>
+
+@if (alertService.alert(); as alert) {
+  <div class="global-alert-container" [class]="alert.type" (click)="alertService.clearAlert()">
+    <div class="global-alert-content">
+      <span class="global-alert-icon">
+        @if (alert.type === 'error') { ⚠️ }
+        @else if (alert.type === 'success') { ✅ }
+        @else { ℹ️ }
+      </span>
+      <span class="global-alert-message">{{ alert.message }}</span>
+    </div>
+    <button class="global-alert-close" aria-label="Close alert">&times;</button>
+  </div>
+}
+
 <main class="app-main-content">
   <router-outlet></router-outlet>
 </main>

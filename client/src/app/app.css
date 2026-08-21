@@ -1,0 +1,70 @@
+/* Global Alert Banner Styling */
+.global-alert-container {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 320px;
+  max-width: 450px;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  animation: slideDown var(--transition-normal) forwards;
+}
+
+.global-alert-container.error {
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+  color: #cf1322;
+}
+
+.global-alert-container.success {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #389e0d;
+}
+
+.global-alert-container.info {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #096dd9;
+}
+
+.global-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.global-alert-icon {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.global-alert-message {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.global-alert-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.global-alert-close:hover {
+  opacity: 1;
+}
