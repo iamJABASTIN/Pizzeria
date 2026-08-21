@@ -1,0 +1,15 @@
+.footer {
+  padding: 0.5rem 0; /* Minimized vertical padding to shrink height */
+  text-align: center;
+  border-top: 1px solid #f5ebd5; /* Faint beige border above the footer */
+  background-color: var(--bg-white);
+  width: 100%;
+}
+
+.footer-text {
+  font-family: var(--font-family-headings);
+  font-weight: 500;
+  color: #df9553;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}

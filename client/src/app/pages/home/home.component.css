@@ -1,0 +1,145 @@
+
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-white);
+}
+
+
+.section {
+  animation: fadeIn var(--transition-slow) var(--ease-out);
+}
+
+
+.hero-section {
+  text-align: center;
+  background-color: transparent;
+  padding: 2rem 0 3rem;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
+.section-title {
+  font-size: 2.75rem;
+  font-weight: 500;
+  color: #333336;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+}
+
+.story-text-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.story-paragraph {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555558;
+}
+
+
+.grid-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  background-color: transparent;
+  padding: 3rem 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.section-image-wrapper {
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: none;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.section-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.section-subtitle {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  color: #333336;
+}
+
+.section-desc {
+  font-size: 0.95rem;
+  color: #555558;
+  line-height: 1.6;
+}
+
+
+.delivery-img {
+  object-fit: cover;
+  background-color: transparent;
+  padding: 0;
+}
+
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #f5ebd5; 
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+/* Responsive Styles matching mobile-first layout rules */
+@media (max-width: 1024px) {
+  .home-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-section {
+    padding: 1.5rem 0;
+  }
+
+  .grid-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+
+  .section-image-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .chefs-section .section-image-wrapper {
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-section {
+    gap: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .section-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
