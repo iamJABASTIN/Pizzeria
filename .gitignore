@@ -11,3 +11,4 @@ server/.env
 
 # System files
 .DS_Store
+.agents
