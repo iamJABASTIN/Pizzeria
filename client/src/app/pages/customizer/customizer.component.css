@@ -1,0 +1,46 @@
+.placeholder-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background-color: var(--bg-light);
+}
+
+.card {
+  background-color: var(--bg-white);
+  padding: 3rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.icon-wrapper {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+}
+
+p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.back-link:hover {
+  color: var(--primary-hover);
+}
