@@ -13,7 +13,9 @@ export class PizzaService {
   private readonly apiUrl = 'http://localhost:9000/api/pizzas';
 
   getAllPizzas(): Observable<Pizza[]> {
-    return this.http.get<{ success: boolean, data: Pizza[] }>(this.apiUrl).pipe(
+    return this.http.get<{ success: boolean, data: Pizza[] }>(this.apiUrl, {
+      headers: { 'x-skip-error-toast': 'true' }
+    }).pipe(
       map(res => res.data)
     );
   }

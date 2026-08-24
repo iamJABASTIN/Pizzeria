@@ -6,8 +6,17 @@ import { AlertService } from '../../services/alert.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const alertService = inject(AlertService);
+  const skipToast = req.headers.has('x-skip-error-toast') || req.headers.has('X-Skip-Error-Toast');
+
+  // Clone request to strip the custom header
+  let finalReq = req;
+  if (skipToast) {
+    finalReq = req.clone({
+      headers: req.headers.delete('x-skip-error-toast').delete('X-Skip-Error-Toast')
+    });
+  }
   
-  return next(req).pipe(
+  return next(finalReq).pipe(
     catchError((error: HttpErrorResponse) => {
       let errorMessage = 'An unexpected connection error occurred. Please try again.';
       if (error.error instanceof ErrorEvent) {
@@ -18,8 +27,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         errorMessage = error.error?.message || `Server Error: ${error.message} (Code: ${error.status})`;
       }
       
-      // Trigger the global alert banner
-      alertService.showAlert(errorMessage, 'error');
+      // Trigger the global alert banner unless requested to skip
+      if (!skipToast) {
+        alertService.showAlert(errorMessage, 'error');
+      }
       
       console.error('HTTP Error caught by interceptor:', error);
       return throwError(() => new Error(errorMessage));
