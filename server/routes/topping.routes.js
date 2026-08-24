@@ -1,0 +1,7 @@
+const express = require("express");
+const router = express.Router();
+const toppingController = require("../controllers/topping.controller");
+
+router.get("/", toppingController.getAllToppings);
+
+module.exports = router;

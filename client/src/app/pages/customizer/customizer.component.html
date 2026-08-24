@@ -1,8 +1,163 @@
-<main class="placeholder-container">
-  <div class="card">
-    <div class="icon-wrapper">🛠️</div>
-    <h1>Build Your Pizza</h1>
-    <p>Our custom pizza builder interactive interface is coming very soon. Get ready to select your own crust, sauce, cheese, and gourmet toppings!</p>
-    <a href="/" class="back-link">Return Home</a>
+<main class="customizer-container">
+  <section class="filter-header-section">
+    <div class="filter-wrapper">
+      <h1 class="menu-title">Build Your Pizza</h1>
+      <p class="menu-subtitle">Pizzeria now gives you options to build your own pizza. Customize your pizza by choosing
+        ingredients from the list given below.</p>
+    </div>
+  </section>
+
+  <div class="customizer-wrapper">
+
+    @if (loading()) {
+    <div class="table-container">
+      <table class="toppings-table">
+        <tbody>
+          @for (item of [1, 2, 3, 4, 5]; track $index) {
+          <tr class="topping-row skeleton-row-container">
+            <td class="topping-img-cell">
+              <div class="topping-img-box skeleton-image"></div>
+            </td>
+
+            <td class="topping-info-cell">
+              <div class="info-wrapper">
+                <div class="topping-name-wrapper">
+                  <div class="skeleton-veg-indicator skeleton-line"></div>
+                  <div class="skeleton-line skeleton-name"></div>
+                </div>
+                <div class="skeleton-line skeleton-price"></div>
+              </div>
+            </td>
+
+            <td class="topping-action-cell">
+              <div class="checkbox-wrapper">
+                <div class="skeleton-line skeleton-checkbox"></div>
+                <div class="skeleton-line skeleton-label"></div>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+
+    @else if (error()) {
+    <div class="error-container">
+      <img src="/error.png" alt="Error" class="error-illustrator" />
+      <h3>Oops! Something went wrong</h3>
+      <p>{{ error() }}</p>
+      <button class="retry-btn" (click)="loadToppings()">Try Again</button>
+    </div>
+    }
+
+    @else {
+    <div class="table-container">
+      <table class="toppings-table">
+        <tbody>
+          @for (topping of toppings(); track topping._id) {
+          <tr class="topping-row">
+            <td class="topping-img-cell">
+              <div class="topping-img-box">
+                <img [src]="topping.image" [alt]="topping.name" class="topping-thumbnail" loading="lazy" />
+              </div>
+            </td>
+
+            <td class="topping-info-cell">
+              <div class="info-wrapper">
+                <div class="topping-name-wrapper">
+                  <div class="veg-indicator-box" [class.veg]="topping.isVeg" [class.non-veg]="!topping.isVeg" [title]="topping.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
+                  <span class="topping-name">{{ topping.name }}</span>
+                </div>
+                @if (topping.price > 0) {
+                <span class="topping-price">₹{{ topping.price.toFixed(2) }}</span>
+                }
+              </div>
+            </td>
+
+            <td class="topping-action-cell">
+              <div class="checkbox-wrapper">
+                <input type="checkbox" [id]="topping._id" [checked]="isToppingSelected(topping._id)"
+                  (change)="toggleTopping(topping._id)" class="topping-checkbox" />
+                <label [for]="topping._id" class="add-label">Add</label>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="total-cost-container">
+      <span class="total-cost-text">Total Cost : {{ totalCost() }}</span>
+    </div>
+
+    <div class="build-action-container">
+      <button class="build-pizza-btn" (click)="onBuildPizza()">
+        Build Ur Pizza
+      </button>
+    </div>
+    }
   </div>
+
+  <!-- Custom Pizza Summary Modal -->
+  @if (showSummaryModal()) {
+  <div class="modal-backdrop" (click)="closeSummaryModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeSummaryModal()" aria-label="Close modal">&times;</button>
+
+      <h2 class="summary-modal-title">Confirm Your Pizza</h2>
+      <p class="summary-modal-subtitle">Review your custom pizza details before adding it to the cart.</p>
+
+      <div class="summary-details">
+        <div class="summary-row base-row">
+          <span class="detail-label">Pizza Base</span>
+          <span class="detail-price">₹{{ BASE_PRICE.toFixed(2) }}</span>
+        </div>
+
+        <div class="toppings-summary-section">
+          <h3 class="toppings-section-title">Selected Toppings</h3>
+          <div class="toppings-summary-list">
+            @for (topping of selectedToppingsList(); track topping._id) {
+            <div class="topping-summary-item">
+              <span class="topping-summary-name">{{ topping.name }}</span>
+              <span class="topping-summary-price">+ ₹{{ topping.price.toFixed(2) }}</span>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="summary-row total-row">
+          <span class="detail-label">Total Price</span>
+          <span class="detail-price total-cost-price">₹{{ customPizzaTotalCost().toFixed(2) }}</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-cancel-btn" (click)="closeSummaryModal()">Cancel</button>
+        <button class="modal-confirm-btn" (click)="confirmBuildPizza()">Confirm & Add to Cart</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Custom Pizza Warning Modal -->
+  @if (showWarningModal()) {
+  <div class="modal-backdrop" (click)="closeWarningModal()">
+    <div class="modal-content warning-modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeWarningModal()" aria-label="Close modal">&times;</button>
+
+      <div class="warning-icon-container">
+        <span class="warning-icon">🍕</span>
+      </div>
+
+      <h2 class="summary-modal-title warning-title">No Toppings Selected</h2>
+      <p class="summary-modal-subtitle warning-subtitle">Please select at least one topping to build your pizza!</p>
+
+      <div class="modal-actions warning-actions">
+        <button class="modal-confirm-btn warning-btn" (click)="closeWarningModal()">Okay, Got it!</button>
+      </div>
+    </div>
+  </div>
+  }
 </main>
