@@ -1,5 +1,7 @@
 # Pizzeria - MEAN Stack Web Application
 
+**Live URL:** [https://pizzeria-pied-zeta.vercel.app/](https://pizzeria-pied-zeta.vercel.app/)
+
 Pizzeria is a modern, responsive pizza ordering web application built using the
 **MEAN stack** (MongoDB, Express.js, Angular, Node.js). It offers standard menu
 choices, custom pizza builder options, cart management, and order placement.
