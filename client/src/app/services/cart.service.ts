@@ -14,10 +14,10 @@ export class CartService {
   private readonly cartItems = signal<CartItem[]>(this.loadCartFromStorage());
 
   readonly items = computed(() => this.cartItems());
-  readonly totalItemsCount = computed(() => 
+  readonly totalItemsCount = computed(() =>
     this.cartItems().reduce((acc, item) => acc + item.quantity, 0)
   );
-  readonly totalPrice = computed(() => 
+  readonly totalPrice = computed(() =>
     this.cartItems().reduce((acc, item) => acc + (item.pizza.price * item.quantity), 0)
   );
 
@@ -49,8 +49,8 @@ export class CartService {
     this.cartItems.update(items => {
       const existingItem = items.find(item => item.pizza._id === pizza._id);
       if (existingItem) {
-        return items.map(item => 
-          item.pizza._id === pizza._id 
+        return items.map(item =>
+          item.pizza._id === pizza._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -61,7 +61,7 @@ export class CartService {
   }
 
   removeFromCart(pizzaId: string): void {
-    this.cartItems.update(items => 
+    this.cartItems.update(items =>
       items.filter(item => item.pizza._id !== pizzaId)
     );
   }
@@ -71,9 +71,9 @@ export class CartService {
       this.removeFromCart(pizzaId);
       return;
     }
-    this.cartItems.update(items => 
-      items.map(item => 
-        item.pizza._id === pizzaId 
+    this.cartItems.update(items =>
+      items.map(item =>
+        item.pizza._id === pizzaId
           ? { ...item, quantity }
           : item
       )

@@ -9,8 +9,7 @@ import { Pizza } from '../models/pizza.model';
 })
 export class PizzaService {
   private readonly http = inject(HttpClient);
-  // Backend is running on port 9000
-  private readonly apiUrl = 'http://localhost:9000/api/pizzas';
+  private readonly apiUrl = '/api/pizzas';
 
   getAllPizzas(): Observable<Pizza[]> {
     return this.http.get<{ success: boolean, data: Pizza[] }>(this.apiUrl, {

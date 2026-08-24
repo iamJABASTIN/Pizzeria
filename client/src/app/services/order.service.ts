@@ -26,7 +26,7 @@ export interface OrderPayload {
 })
 export class OrderService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:9000/api/orders';
+  private readonly apiUrl = '/api/orders';
 
   placeOrder(order: OrderPayload): Observable<{ success: boolean; message: string; data: any }> {
     return this.http.post<{ success: boolean; message: string; data: any }>(this.apiUrl, order);

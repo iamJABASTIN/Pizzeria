@@ -66,7 +66,8 @@
             <td class="topping-info-cell">
               <div class="info-wrapper">
                 <div class="topping-name-wrapper">
-                  <div class="veg-indicator-box" [class.veg]="topping.isVeg" [class.non-veg]="!topping.isVeg" [title]="topping.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
+                  <div class="veg-indicator-box" [class.veg]="topping.isVeg" [class.non-veg]="!topping.isVeg"
+                    [title]="topping.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
                   <span class="topping-name">{{ topping.name }}</span>
                 </div>
                 @if (topping.price > 0) {

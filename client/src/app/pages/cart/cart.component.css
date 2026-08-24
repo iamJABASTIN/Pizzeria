@@ -14,7 +14,6 @@
   align-items: start;
 }
 
-/* Card Styling */
 .cart-card,
 .summary-card {
   background-color: var(--bg-white, #fff);
@@ -34,7 +33,6 @@
   padding-bottom: 0.75rem;
 }
 
-/* Empty Cart State */
 .empty-cart-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -74,7 +72,6 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Cart Items Rows */
 .cart-items-list {
   display: flex;
   flex-direction: column;
@@ -110,7 +107,6 @@
   object-fit: cover;
 }
 
-/* Veg / Details Cell */
 .details-wrapper {
   display: flex;
   align-items: center;
@@ -162,7 +158,6 @@
   color: var(--text-muted, #718096);
 }
 
-/* Quantity Selector (Pill box match) */
 .qty-selector {
   display: flex;
   align-items: center;
@@ -205,7 +200,6 @@
   border-right: 1px solid #4a5568;
 }
 
-/* Price & Delete */
 .cart-item-total-price {
   font-size: 1.05rem;
   font-weight: 700;
@@ -236,7 +230,6 @@
   height: 18px;
 }
 
-/* Sub Total Footer Left */
 .cart-subtotal-container {
   margin-top: 2rem;
   text-align: right;
@@ -251,7 +244,6 @@
   font-family: var(--font-family-headings);
 }
 
-/* Right Column Summary */
 .summary-card {
   margin-bottom: 1.5rem;
 }
@@ -289,7 +281,6 @@
   color: #2d3748;
 }
 
-/* Expandable Accordion */
 .ingredients-accordion {
   border-radius: 4px;
   overflow: hidden;
@@ -367,7 +358,6 @@
   color: #2d3748;
 }
 
-/* Divider & Total */
 .divider {
   height: 1px;
   background-color: var(--border-color, #cbd5e0);
@@ -389,7 +379,6 @@
   color: #000;
 }
 
-/* Action Buttons Container */
 .action-buttons-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -440,7 +429,6 @@
   transform: translateY(0);
 }
 
-/* Modal Popup Styles */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -527,7 +515,6 @@
   transform: translateY(0);
 }
 
-/* Success Modal Specifics */
 .success-modal-content {
   text-align: center;
   padding: 2.5rem 2rem 2rem;
@@ -602,7 +589,6 @@
   }
 }
 
-/* Responsive styles */
 @media (max-width: 900px) {
   .cart-grid {
     grid-template-columns: 1fr;
@@ -646,7 +632,6 @@
   }
 }
 
-/* Toppings Breakdown in Cart Item Row */
 .cart-item-toppings-breakdown {
   margin-top: 0.35rem;
   font-size: 0.85rem;

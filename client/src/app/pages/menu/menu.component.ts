@@ -12,10 +12,9 @@ import { Pizza } from '../../models/pizza.model';
   styleUrl: './menu.component.css'
 })
 export class MenuComponent implements OnInit {
+
   private readonly pizzaService = inject(PizzaService);
   private readonly cartService = inject(CartService);
-
-  // States
   protected readonly pizzas = signal<Pizza[]>([]);
   protected readonly loading = signal<boolean>(true);
   protected readonly error = signal<string | null>(null);

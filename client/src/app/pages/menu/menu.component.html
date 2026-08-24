@@ -1,5 +1,4 @@
 <main class="menu-container">
-  <!-- Interactive Filter Header -->
   <section class="filter-header-section">
     <div class="filter-wrapper">
       <h1 class="menu-title">Order Pizza</h1>
@@ -7,88 +6,89 @@
     </div>
   </section>
 
-  <!-- Menu Cards Layout -->
+
   <section class="menu-list-section">
-    <!-- Skeleton Loaders -->
+
     @if (loading()) {
-      <div class="menu-grid">
-        @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
-          <div class="pizza-card skeleton-card">
-            <div class="skeleton-image"></div>
-            <div class="skeleton-content">
-              <div class="skeleton-row header"></div>
-              <div class="skeleton-row desc"></div>
-              <div class="skeleton-row desc-short"></div>
-              <div class="skeleton-row price"></div>
-              <div class="skeleton-row tags"></div>
-              <div class="skeleton-row button"></div>
-            </div>
-          </div>
-        }
+    <div class="menu-grid">
+      @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
+      <div class="pizza-card skeleton-card">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-row header"></div>
+          <div class="skeleton-row desc"></div>
+          <div class="skeleton-row desc-short"></div>
+          <div class="skeleton-row price"></div>
+          <div class="skeleton-row tags"></div>
+          <div class="skeleton-row button"></div>
+        </div>
       </div>
+      }
+    </div>
     }
 
-    <!-- Error Banner -->
+
     @else if (error()) {
-      <div class="error-container">
-        <img src="/error.png" alt="Error" class="error-illustrator" />
-        <h3>Oops! Something went wrong</h3>
-        <p>{{ error() }}</p>
-        <button class="retry-btn" (click)="loadPizzas()">Try Again</button>
-      </div>
+    <div class="error-container">
+      <img src="/error.png" alt="Error" class="error-illustrator" />
+      <h3>Oops! Something went wrong</h3>
+      <p>{{ error() }}</p>
+      <button class="retry-btn" (click)="loadPizzas()">Try Again</button>
+    </div>
     }
 
-    <!-- Empty Results -->
+
     @else if (pizzas().length === 0) {
-      <div class="empty-container">
-        <div class="empty-icon">🍕</div>
-        <h3>No Pizzas Available</h3>
-        <p>There are no pizzas available at the moment. Please check back later.</p>
-      </div>
+    <div class="empty-container">
+      <div class="empty-icon">🍕</div>
+      <h3>No Pizzas Available</h3>
+      <p>There are no pizzas available at the moment. Please check back later.</p>
+    </div>
     }
 
-    <!-- Pizza Cards Grid -->
+
     @else {
-      <div class="menu-grid">
-        @for (pizza of pizzas(); track pizza._id) {
-          <article class="pizza-card">
-            <!-- Column 1: Details (Name, Veg Indicator, Description, Ingredients, Toppings) -->
-            <div class="pizza-left-col">
-              <div class="pizza-header-row">
-                <h2 class="pizza-name">{{ pizza.name }}</h2>
-                <div class="veg-indicator-box" [class.veg]="pizza.isVeg" [class.non-veg]="!pizza.isVeg" [title]="pizza.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
-              </div>
+    <div class="menu-grid">
+      @for (pizza of pizzas(); track pizza._id) {
+      <article class="pizza-card">
 
-              <p class="pizza-description">{{ pizza.description }}</p>
+        <div class="pizza-left-col">
+          <div class="pizza-header-row">
+            <h2 class="pizza-name">{{ pizza.name }}</h2>
+            <div class="veg-indicator-box" [class.veg]="pizza.isVeg" [class.non-veg]="!pizza.isVeg"
+              [title]="pizza.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
+          </div>
 
-              <div class="pizza-spec">
-                <strong>Ingredients : </strong>
-                @for (ing of pizza.ingredients; track ing; let isLast = $last) {
-                  <span>{{ ing }}{{ !isLast ? ', ' : '' }}</span>
-                }
-              </div>
+          <p class="pizza-description">{{ pizza.description }}</p>
 
-              <div class="pizza-spec">
-                <strong>Toppings : </strong>
-                @for (top of pizza.toppings; track top; let isLast = $last) {
-                  <span>{{ top }}{{ !isLast ? ', ' : '' }}</span>
-                }
-              </div>
-            </div>
+          <div class="pizza-spec">
+            <strong>Ingredients : </strong>
+            @for (ing of pizza.ingredients; track ing; let isLast = $last) {
+            <span>{{ ing }}{{ !isLast ? ', ' : '' }}</span>
+            }
+          </div>
 
-            <!-- Column 2: Visuals & Action (Image, Price, Add to Cart Button) -->
-            <div class="pizza-right-col">
-              <div class="pizza-img-box">
-                <img [src]="pizza.image" [alt]="pizza.name" class="pizza-thumbnail" loading="lazy" />
-              </div>
-              <span class="pizza-price">₹{{ pizza.price.toFixed(2) }}</span>
-              <button class="add-to-cart-btn" (click)="onAddToCart(pizza)" aria-label="Add to cart">
-                Add to Cart
-              </button>
-            </div>
-          </article>
-        }
-      </div>
+          <div class="pizza-spec">
+            <strong>Toppings : </strong>
+            @for (top of pizza.toppings; track top; let isLast = $last) {
+            <span>{{ top }}{{ !isLast ? ', ' : '' }}</span>
+            }
+          </div>
+        </div>
+
+
+        <div class="pizza-right-col">
+          <div class="pizza-img-box">
+            <img [src]="pizza.image" [alt]="pizza.name" class="pizza-thumbnail" loading="lazy" />
+          </div>
+          <span class="pizza-price">₹{{ pizza.price.toFixed(2) }}</span>
+          <button class="add-to-cart-btn" (click)="onAddToCart(pizza)" aria-label="Add to cart">
+            Add to Cart
+          </button>
+        </div>
+      </article>
+      }
+    </div>
     }
   </section>
 </main>

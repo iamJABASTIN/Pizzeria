@@ -12,8 +12,6 @@ import { CartService } from '../../../services/cart.service';
 export class HeaderComponent {
   private readonly router = inject(Router);
   protected readonly cartService = inject(CartService);
-  
-  // Responsive mobile menu state using Angular Signals
   protected readonly isMenuOpen = signal(false);
 
   toggleMenu(): void {

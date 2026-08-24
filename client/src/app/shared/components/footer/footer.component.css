@@ -1,7 +1,7 @@
 .footer {
-  padding: 0.5rem 0; /* Minimized vertical padding to shrink height */
+  padding: 0.5rem 0;
   text-align: center;
-  border-top: 1px solid #f5ebd5; /* Faint beige border above the footer */
+  border-top: 1px solid #f5ebd5;
   background-color: var(--bg-white);
   width: 100%;
 }

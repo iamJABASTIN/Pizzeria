@@ -16,7 +16,7 @@ export class AlertService {
     this.currentAlert.set({ message, type });
     setTimeout(() => {
       this.clearAlert();
-    }, 5000); // Auto-hide after 5 seconds
+    }, 5000);
   }
 
   clearAlert(): void {

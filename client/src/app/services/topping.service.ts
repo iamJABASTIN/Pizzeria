@@ -9,8 +9,7 @@ import { Topping } from '../models/topping.model';
 })
 export class ToppingService {
   private readonly http = inject(HttpClient);
-  // Backend is running on port 9000
-  private readonly apiUrl = 'http://localhost:9000/api/toppings';
+  private readonly apiUrl = '/api/toppings';
 
   getAllToppings(): Observable<Topping[]> {
     return this.http.get<{ success: boolean, data: Topping[] }>(this.apiUrl).pipe(

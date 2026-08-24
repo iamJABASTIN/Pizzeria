@@ -24,14 +24,11 @@ export class CartComponent implements OnInit {
   protected readonly isPaying = signal<boolean>(false);
 
   ngOnInit(): void {
-    // Load toppings to map prices for the custom toppings breakdown list
     this.toppingService.getAllToppings().subscribe({
       next: (data) => this.toppings.set(data),
       error: (err) => console.error('Failed to load toppings for cart breakdown:', err)
     });
   }
-
-  // Splits: total cost for all pizza bases (standard price or ₹260 for custom pizzas)
   protected readonly pizzaTotal = computed(() => {
     return this.cartService.items().reduce((sum, item) => {
       const isCustom = item.pizza.name === 'Custom Pizza' || item.pizza._id.startsWith('custom_');
@@ -39,8 +36,6 @@ export class CartComponent implements OnInit {
       return sum + (baseCost * item.quantity);
     }, 0);
   });
-
-  // Splits: total cost for all ingredients/toppings on custom pizzas
   protected readonly ingredientsTotal = computed(() => {
     return this.cartService.items().reduce((sum, item) => {
       const isCustom = item.pizza.name === 'Custom Pizza' || item.pizza._id.startsWith('custom_');
@@ -52,8 +47,6 @@ export class CartComponent implements OnInit {
   protected readonly grandTotal = computed(() => {
     return this.cartService.totalPrice();
   });
-
-  // Aggregated list of custom toppings in the cart with their prices and total quantity
   protected readonly customToppingsList = computed(() => {
     const toppingsMap = new Map<string, number>();
     this.toppings().forEach(t => toppingsMap.set(t.name, t.price));

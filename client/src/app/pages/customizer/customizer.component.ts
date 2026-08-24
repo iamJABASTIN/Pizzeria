@@ -103,8 +103,7 @@ export class CustomizerComponent implements OnInit {
     };
 
     this.cartService.addToCart(customPizza);
-    
-    // Reset selections and close modal
+
     this.selectedToppings.set(new Set());
     this.showSummaryModal.set(false);
   }
