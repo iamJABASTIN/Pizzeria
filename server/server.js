@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const seedDatabase = require("./config/seeder");
 const pizzaRoutes = require("./routes/pizza.routes");
 const toppingRoutes = require("./routes/topping.routes");
+const orderRoutes = require("./routes/order.routes");
 const errorHandler = require("./middlewares/errorHandler");
 
 dotenv.config();
@@ -15,10 +15,8 @@ app.use(cors());
 
 const PORT = process.env.PORT || 9000;
 
-// Connect to MongoDB & Seed Data
-connectDB().then(() => {
-  seedDatabase();
-});
+// Connect to MongoDB
+connectDB();
 
 // Routes
 app.get("/", (req, res) => {
@@ -27,6 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/pizzas", pizzaRoutes);
 app.use("/api/toppings", toppingRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Error Handler Middleware
 app.use(errorHandler);

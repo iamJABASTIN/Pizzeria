@@ -26,7 +26,6 @@ export class HeaderComponent {
 
   navigateToCart(): void {
     this.closeMenu();
-    // In future iterations, navigate to the cart page
-    console.log('Navigating to Shopping Cart...');
+    this.router.navigate(['/cart']);
   }
 }

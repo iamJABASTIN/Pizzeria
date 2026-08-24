@@ -1,0 +1,163 @@
+<main class="cart-container">
+  <div class="cart-grid">
+    <!-- Left Column: Items List -->
+    <section class="cart-left-col">
+      <div class="cart-card">
+        <h1 class="cart-title">My Cart</h1>
+
+        @if (cartService.items().length === 0) {
+          <div class="empty-cart-state">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>Your Cart is Empty</h2>
+            <p>You haven't added any pizzas to your cart yet. Visit our menu to start ordering!</p>
+            <a href="/order" class="browse-menu-btn">Browse Menu</a>
+          </div>
+        } @else {
+          <div class="cart-items-list">
+            @for (item of cartService.items(); track item.pizza._id) {
+              <div class="cart-item-row">
+                <!-- Thumbnail -->
+                <div class="cart-item-img-cell">
+                  <div class="cart-item-img-box">
+                    <img [src]="(item.pizza.name === 'Custom Pizza' || item.pizza._id.startsWith('custom_')) ? '/custom pizza.webp' : item.pizza.image" [alt]="item.pizza.name" class="cart-item-thumbnail" loading="lazy" />
+                  </div>
+                </div>
+
+                <!-- Veg Indicator & Details -->
+                <div class="cart-item-details-cell">
+                  <div class="details-wrapper">
+                    <div class="veg-indicator-box" [class.veg]="item.pizza.isVeg" [class.non-veg]="!item.pizza.isVeg" [title]="item.pizza.isVeg ? 'Vegetarian' : 'Non-Vegetarian'"></div>
+                    <div class="name-price-box">
+                      <h2 class="cart-item-name">{{ item.pizza.name }}</h2>
+                      <span class="cart-item-unit-price">₹{{ item.pizza.price }}</span>
+                      @if (item.pizza.name === 'Custom Pizza' || item.pizza._id.startsWith('custom_')) {
+                        <div class="cart-item-toppings-breakdown">
+                          <span class="toppings-label">Toppings:</span>
+                          <span class="toppings-list">{{ item.pizza.toppings.join(', ') }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="cart-item-qty-cell">
+                  <div class="qty-selector">
+                    <button class="qty-btn minus" (click)="updateQty(item, -1)" aria-label="Decrease quantity">-</button>
+                    <span class="qty-value">{{ item.quantity }}</span>
+                    <button class="qty-btn plus" (click)="updateQty(item, 1)" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+
+                <!-- Item Total Price -->
+                <div class="cart-item-price-cell">
+                  <span class="cart-item-total-price">₹{{ (item.pizza.price * item.quantity).toFixed(2) }}</span>
+                </div>
+
+                <!-- Remove Button -->
+                <div class="cart-item-remove-cell">
+                  <button class="delete-btn" (click)="removeItem(item)" aria-label="Remove item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="trash-icon">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Left Column Footer (Sub Total) -->
+          <div class="cart-subtotal-container">
+            <span class="subtotal-text">Sub Total : ₹{{ pizzaTotal().toFixed(2) }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Right Column: Order Summary & Actions -->
+    @if (cartService.items().length > 0) {
+      <aside class="cart-right-col">
+        <div class="summary-card">
+          <h2 class="summary-title">The total amount of</h2>
+          
+          <div class="summary-details">
+            <!-- Pizza Total Row -->
+            <div class="summary-row">
+              <span class="label">Pizza</span>
+              <span class="value">₹{{ pizzaTotal().toFixed(2) }}</span>
+            </div>
+
+            <!-- Ingredients Expandable Accordion -->
+            <div class="ingredients-accordion">
+              <button class="ingredients-accordion-header" (click)="toggleIngredientsDropdown()" aria-expanded="false">
+                <span class="label-with-icon">
+                  <span>Ingredients</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" [class.open]="showIngredientsDropdown()">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+                <span class="value">₹{{ ingredientsTotal().toFixed(2) }}</span>
+              </button>
+
+              @if (showIngredientsDropdown()) {
+                <div class="ingredients-accordion-content">
+                  @if (customToppingsList().length === 0) {
+                    <p class="no-custom-ingredients-msg">No custom toppings added.</p>
+                  } @else {
+                    <ul class="cart-toppings-list">
+                      @for (topping of customToppingsList(); track topping.name) {
+                        <li class="cart-topping-item">
+                          <span class="topping-name-qty">{{ topping.name }} (x{{ topping.quantity }})</span>
+                          <span class="topping-item-total">+ ₹{{ (topping.price * topping.quantity).toFixed(2) }}</span>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Grand Total Row -->
+            <div class="summary-row total-row">
+              <span class="label">Total :</span>
+              <span class="value">₹{{ grandTotal().toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkout & Clear Cart Actions -->
+        <div class="action-buttons-container">
+          <button class="pay-btn" (click)="placeOrder()" [disabled]="isPaying()">
+            @if (isPaying()) { Processing... } @else { Pay }
+          </button>
+          <button class="clear-btn" (click)="clearCart()">Clear</button>
+        </div>
+      </aside>
+    }
+  </div>
+
+  <!-- Order Success Modal -->
+  @if (showSuccessModal()) {
+    <div class="modal-backdrop" (click)="closeSuccessModal()">
+      <div class="modal-content success-modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close-btn" (click)="closeSuccessModal()" aria-label="Close modal">&times;</button>
+        
+        <div class="success-icon-container">
+          <span class="success-icon">🎉</span>
+        </div>
+        
+        <h2 class="summary-modal-title success-title">Order Placed Successfully!</h2>
+        <p class="summary-modal-subtitle success-subtitle">Your delicious pizza order has been placed, stored in the database, and removed from your cart.</p>
+        
+        <div class="modal-actions success-actions">
+          <button class="modal-confirm-btn success-btn" (click)="closeSuccessModal()">Great! Take Me Home</button>
+        </div>
+      </div>
+    </div>
+  }
+</main>

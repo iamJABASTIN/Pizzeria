@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { Pizza } from '../models/pizza.model';
 
 export interface CartItem {
@@ -10,7 +10,8 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  private readonly cartItems = signal<CartItem[]>([]);
+  private readonly STORAGE_KEY = 'pizzeria_cart_items';
+  private readonly cartItems = signal<CartItem[]>(this.loadCartFromStorage());
 
   readonly items = computed(() => this.cartItems());
   readonly totalItemsCount = computed(() => 
@@ -19,6 +20,30 @@ export class CartService {
   readonly totalPrice = computed(() => 
     this.cartItems().reduce((acc, item) => acc + (item.pizza.price * item.quantity), 0)
   );
+
+  constructor() {
+    effect(() => {
+      this.saveCartToStorage(this.cartItems());
+    });
+  }
+
+  private loadCartFromStorage(): CartItem[] {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      console.error('Failed to load cart from storage:', e);
+      return [];
+    }
+  }
+
+  private saveCartToStorage(items: CartItem[]): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {
+      console.error('Failed to save cart to storage:', e);
+    }
+  }
 
   addToCart(pizza: Pizza): void {
     this.cartItems.update(items => {

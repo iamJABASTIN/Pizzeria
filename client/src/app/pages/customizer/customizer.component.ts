@@ -93,13 +93,13 @@ export class CustomizerComponent implements OnInit {
 
     const customPizza: Pizza = {
       _id: 'custom_' + Date.now(),
-      name: 'Custom Pizza',
+      name: 'Your Pizza(Custom)',
       isVeg,
       price: this.customPizzaTotalCost(),
       description: 'A custom-built pizza with ' + selectedToppingsList.map(t => t.name).join(', '),
       ingredients: ['Custom Crust', 'Pizza Sauce', 'Cheese'],
       toppings: selectedToppingsList.map(t => t.name),
-      image: selectedToppingsList[0]?.image || 'https://res.cloudinary.com/dn04pdikt/image/upload/v1787317057/pizzeria-app/toppings/mushroom_topping.jpg'
+      image: '/custom pizza.webp'
     };
 
     this.cartService.addToCart(customPizza);
